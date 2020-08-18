@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="W3C school">
+    <test name="Try Sql Page">
+        <classes>
+            <class name="regression.TrySQLTest"></class>
+        </classes>
+    </test>
+</suite>
