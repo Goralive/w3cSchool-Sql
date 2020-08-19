@@ -37,11 +37,7 @@ public class TrySQLPage {
 
     @Step("Clear input field")
     public TrySQLPage clearInputFiled() {
-        tryItForm.click();
-        tryItForm.actions()
-                .keyDown(Keys.CONTROL).sendKeys("a")
-                .sendKeys(Keys.DELETE)
-                .perform();
+        windowEditor.typeByJsToEditor("");
         return this;
     }
 
