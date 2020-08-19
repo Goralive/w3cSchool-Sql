@@ -24,6 +24,7 @@ public class TrySQLPage {
     public Element windowEditor = new Element(By.cssSelector("window.editor"), "Window editor");
     public Element runBtn = new Element(By.cssSelector("button.w3-green"), "Run sql script button");
     public Element customerNameElm = new Element(By.cssSelector(".w3-table-all tbody tr td:nth-child(3)"),"Customer name");
+    public Element resultsElem = new Element(By.cssSelector("#divResultSQL > div"),"Results");
     private List<WebElement> elementList;
 
     @Step("Open Url")
@@ -121,6 +122,7 @@ public class TrySQLPage {
     public void executeSQLQuery() {
         windowEditor.typeByJsToEditor(this.querySQL + ";");
         runBtn.click();
+        resultsElem.find().isDisplayed();
     }
 
     private String buildData(String data) {
