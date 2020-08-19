@@ -1,4 +1,4 @@
-# W3C SQL Try run
+# W3C SQL
 ### About
 - Java 8
 - Selenium
