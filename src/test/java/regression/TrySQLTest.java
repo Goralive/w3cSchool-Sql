@@ -9,8 +9,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import static com.w3c.ui.core.Constants.CUSTOMERS_TABLE;
+import static com.w3c.ui.core.Constants.EQUALS_SIGH;
 
-@Epic("Regression")
+@Epic("Regression SQL CRUD")
 @Feature("SQL checks")
 public class TrySQLTest extends BrowserFactory {
     TrySQLPage trySQLPage = new TrySQLPage();
@@ -31,7 +32,7 @@ public class TrySQLTest extends BrowserFactory {
         trySQLPage
                 .open()
                 .selectFrom("*", CUSTOMERS_TABLE)
-                .whereCity(" = ", "London");
+                .whereCity(EQUALS_SIGH, "London");
         trySQLPage.executeSQLQuery();
         Assert.assertEquals(trySQLPage.getSizeOfResultArray(), 6);
     }
@@ -48,7 +49,7 @@ public class TrySQLTest extends BrowserFactory {
         trySQLPage
                 .clearInputFiled()
                 .selectFrom("*", CUSTOMERS_TABLE)
-                .whereCustomerName("=", "Jackson");
+                .whereCustomerName(EQUALS_SIGH, "Jackson");
         trySQLPage.executeSQLQuery();
         Assert.assertTrue(trySQLPage.getSizeOfResultArray() > 0);
     }
@@ -61,7 +62,7 @@ public class TrySQLTest extends BrowserFactory {
                 .open()
                 .clearInputFiled()
                 .selectFrom("*", CUSTOMERS_TABLE)
-                .whereCustomerID("=", 1);
+                .whereCustomerID(EQUALS_SIGH, 1);
         trySQLPage.executeSQLQuery();
 
         String beforeUpdateString = trySQLPage.getCustomerName();
@@ -70,15 +71,41 @@ public class TrySQLTest extends BrowserFactory {
                 .clearInputFiled()
                 .update()
                 .setNewValuesForCustomer("John", customerName, "Marple str 74", "Detroit", "2002", "US")
-                .whereCustomerID("=", 1);
+                .whereCustomerID(EQUALS_SIGH, 1);
         trySQLPage.executeSQLQuery();
 
         trySQLPage
                 .clearInputFiled()
                 .selectFrom("*", CUSTOMERS_TABLE)
-                .whereCustomerID("=", 1);
+                .whereCustomerID(EQUALS_SIGH, 1);
         trySQLPage.executeSQLQuery();
         Assert.assertTrue(!beforeUpdateString.equals(trySQLPage.getCustomerName())
                 && trySQLPage.getCustomerName().equals(customerName));
+    }
+
+    @Story("Delete customer Bon app from customer table")
+    @Test
+    public void shouldInformationAboutContactBeDeleted() {
+        //given
+        String customerName = "Bon app\\'";
+        trySQLPage
+                .open()
+                .selectFrom("*", CUSTOMERS_TABLE)
+                .whereCustomerName(EQUALS_SIGH, customerName);
+        trySQLPage.executeSQLQuery();
+        Assert.assertEquals(trySQLPage.getSizeOfResultArray(),1);
+        //when
+        trySQLPage
+                .clearInputFiled()
+                .deleteFrom(CUSTOMERS_TABLE)
+                .whereCustomerName(EQUALS_SIGH, customerName);
+        trySQLPage.executeSQLQuery();
+       //then
+        trySQLPage
+                .clearInputFiled()
+                .selectFrom("*", CUSTOMERS_TABLE)
+                .whereCustomerName(EQUALS_SIGH, customerName);
+        trySQLPage.executeSQLQuery();
+        Assert.assertTrue(trySQLPage.isNoResults());
     }
 }

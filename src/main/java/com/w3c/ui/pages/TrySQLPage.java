@@ -23,8 +23,8 @@ public class TrySQLPage {
     public Element sqlTextElm = new Element(By.cssSelector("#tryitform .cm-m-sql"), "Text in the Form");
     public Element windowEditor = new Element(By.cssSelector("window.editor"), "Window editor");
     public Element runBtn = new Element(By.cssSelector("button.w3-green"), "Run sql script button");
-    public Element customerNameElm = new Element(By.cssSelector(".w3-table-all tbody tr td:nth-child(3)"),"Customer name");
-    public Element resultsElem = new Element(By.cssSelector("#divResultSQL > div"),"Results");
+    public Element customerNameElm = new Element(By.cssSelector(".w3-table-all tbody tr td:nth-child(3)"), "Customer name");
+    public Element resultsElem = new Element(By.cssSelector("#divResultSQL > div"), "Results");
     private List<WebElement> elementList;
 
     @Step("Open Url")
@@ -45,6 +45,11 @@ public class TrySQLPage {
     @Step("SELECT {0} FROM {1}")
     public TrySQLPage selectFrom(String row, String tableName) {
         querySQL = SELECT + row + FROM + tableName;
+        return this;
+    }
+
+    public TrySQLPage deleteFrom(String tableName) {
+        querySQL = DELETE + FROM + tableName;
         return this;
     }
 
@@ -71,8 +76,12 @@ public class TrySQLPage {
         return this;
     }
 
-    public String getCustomerName(){
-       return customerNameElm.find().getText();
+    public String getCustomerName() {
+        return customerNameElm.find().getText();
+    }
+
+    public boolean isNoResults() {
+        return resultsElem.find().getText().equalsIgnoreCase("No result.");
     }
 
     public TrySQLPage addValues(String customerName, String contactName, String address, String city, String postalCode,
